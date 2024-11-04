@@ -1,5 +1,5 @@
 package main
-
+//https://github.com/nangongzhiyu/calculatorByGoWeb
 import (
 	"encoding/json"
 	"fmt"
@@ -19,6 +19,7 @@ type CalculationResponse struct {
 }
 
 var displayValue string = "0"
+//https://github.com/nangongzhiyu/calculatorByGoWeb
 var currentOperand string = ""
 var currentOperator string = ""
 
@@ -48,7 +49,7 @@ func handleCalculation(w http.ResponseWriter, r *http.Request) {
 	resp := CalculationResponse{Result: displayValue}
 	json.NewEncoder(w).Encode(resp)
 }
-
+//https://github.com/nangongzhiyu/calculatorByGoWeb
 func resetCalculator() {
 	displayValue = "0"
 	currentOperand = ""
@@ -79,7 +80,7 @@ func computeResult() {
 		currentOperator = ""
 	}
 }
-
+//https://github.com/nangongzhiyu/calculatorByGoWeb
 func appendDigit(digit string) {
 	if displayValue == "0" {
 		displayValue = digit
@@ -111,9 +112,10 @@ func evaluate(operand1, operand2, operator string) (float64, error) {
 		return 0, fmt.Errorf("invalid operator: %s", operator)
 	}
 }
-
+//https://github.com/nangongzhiyu/calculatorByGoWeb
 func main() {
 	http.HandleFunc("/", mainPage)
 	http.HandleFunc("/calculate", handleCalculation)
+//https://github.com/nangongzhiyu/calculatorByGoWeb
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
