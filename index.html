@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计算器</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+        }
+
+        .calculator {
+            width: 300px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .display {
+            background-color: #eee;
+            color: black;
+            text-align: right;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            font-size: 30px;
+            overflow: hidden;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn {
+            width: 60px;
+            height: 60px;
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            margin: 10px;
+            font-size: 40px;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        .btn:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+<div class="calculator">
+    <div class="display" id="display">0</div>
+    <div class="row">
+        <button class="btn" data-value="C">C</button>
+        <button class="btn" data-value="/">/</button>
+        <button class="btn" data-value="*">*</button>
+        <button class="btn" data-value="-">-</button>
+    </div>
+    <div class="row">
+        <button class="btn" data-value="7">7</button>
+        <button class="btn" data-value="8">8</button>
+        <button class="btn" data-value="9">9</button>
+        <button class="btn" data-value="+">+</button>
+    </div>
+    <div class="row">
+        <button class="btn" data-value="4">4</button>
+        <button class="btn" data-value="5">5</button>
+        <button class="btn" data-value="6">6</button>
+        <button class="btn" data-value="=">=</button>
+    </div>
+    <div class="row">
+        <button class="btn" data-value="1">1</button>
+        <button class="btn" data-value="2">2</button>
+        <button class="btn" data-value="3">3</button>
+        <button class="btn" data-value="0">0</button>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const buttons = document.querySelectorAll('.btn');
+        const display = document.getElementById('display');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', function () {
+                const value = this.getAttribute('data-value');
+                fetch('/calculate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ operation: value, value: value })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        display.textContent = data.result;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        display.textContent = "Error";
+                    });
+            });
+        });
+    });
+</script>
+</body>
+</html>
